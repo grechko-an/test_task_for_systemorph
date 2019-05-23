@@ -1,27 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var UserType;
-(function (UserType) {
-    UserType["IEL"] = "iel";
-    UserType["INST"] = "institution";
-    UserType["WEB"] = "web";
-})(UserType = exports.UserType || (exports.UserType = {}));
-exports.users = [
-    {
-        username: 'fakesampleusername1',
-        password: 'fakesampleusername1',
-        types: [UserType.IEL, UserType.INST]
-    },
-    {
-        username: 'fakesampleusername2',
-        password: 'fakesampleusername2',
-        types: [UserType.WEB]
+class User {
+    constructor() {
+        this.username = "MrBean";
+        this.correctPass = "parker";
+        this.failedPass = "a";
+        this.correctEmail = "parker1983@gmail.com";
+        this.failedEmail = "parker1983gmail.com";
+        this.facebookLogin = "man.11@gmail.com";
+        this.facebookPass = "man11____";
     }
-];
-exports.instUsers = exports.users.filter((user) => {
-    return user.types.some(type => type === UserType.INST);
-});
-exports.webUsers = exports.users.filter((user) => {
-    return user.types.some(type => type === UserType.WEB);
-});
+}
+exports.User = User;
 //# sourceMappingURL=users.data.js.map

@@ -5,6 +5,7 @@ class HomePage {
     constructor() {
         this.mainLogo = protractor_1.element(protractor_1.by.css('div[id="logo"] a img'));
         this.siteSloganText = protractor_1.element(protractor_1.by.css('div[id="headline"] img'));
+        this.signInForm = protractor_1.element(protractor_1.by.id('signInForm'));
     }
 }
 exports.HomePage = HomePage;
