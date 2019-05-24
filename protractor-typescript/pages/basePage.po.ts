@@ -11,6 +11,7 @@ export class BasePage {
     this._mainLogo = element(by.css('div[id="logo"] a img'));
   };
 
+  
   public async isSignedOut() : Promise<boolean> {
 
     let id: string = await this._pageBody.getAttribute('id'); 

@@ -16,9 +16,6 @@ class BrowserHelper {
       await browser.wait(EC.elementToBeSelected(element), timeout);
     }
 
-    public async IsRightPageOpened(urlText: string) {
-      await browser.wait(EC.urlContains(urlText), timeout);
-    }
 }
 
 export let browserHelper: BrowserHelper = new BrowserHelper();

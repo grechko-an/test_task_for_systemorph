@@ -3,10 +3,10 @@ import { BasePage } from "../pages/basePage.po"
 import { HomePage } from '../pages/homePage.po';
 import { browserHelper } from "../helpers/browserHelper";
 import { SignUp } from "../pages/signUpPage.po";
+import { SignIn } from "../pages/signInPage.to"
 import { DataHelper } from "../data/dataHelper";
 import { ModalPopup } from "../pages/modalPopup.po";
-import { GettingStartedPage } from "../pages/gettingStartedPage.po";
-import { SignedOutPage } from "../pages/signedOutPage.po"
+
 
 import chai = require('chai');
 import { async } from 'q';
@@ -19,10 +19,10 @@ describe('Home Page', () => {
   const basePage = new BasePage();
   const homePage = new HomePage();
   const signUpPage = new SignUp();
+  const signInPage = new SignIn();
   const dataHelper = new DataHelper();
   const modalPopup = new ModalPopup();
-  const gettingStartedPage = new GettingStartedPage();
-  const signedOutPage = new SignedOutPage();
+
 
 
   describe('Smoke test', () => {
@@ -38,82 +38,72 @@ describe('Home Page', () => {
 
   xdescribe('Sign up and Sign out features', () => {
 
-    it('Should Sign up with correct user data', async () => {
-        await browserHelper.WaitElementClikable(homePage._signUpBtn);
-        await homePage._signUpBtn.click();
-        await browserHelper.WaitElementVisible(signUpPage._pageTitle);
-        await signUpPage._signUpNameFld.click();
-        await signUpPage._signUpNameFld.sendKeys(dataHelper._username);
-        await signUpPage._signUpEmailFld.click();
-        await signUpPage._signUpEmailFld.sendKeys(dataHelper._invalidEmail);
-        await signUpPage._signUpPassFld.click();
-        await signUpPage._signUpPassFld.sendKeys(dataHelper._correctPass);
-        await signUpPage._captchaCbx.click();
-        await signUpPage._signUpBtn.click();
-        await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
-        await browserHelper.WaitElementClikable(basePage._mainLogo);
-        await basePage._mainLogo.click();
-        await browserHelper.WaitElementClikable(modalPopup._closeBtn);
-        await modalPopup._closeBtn.click();
+    it('Should Sign up via Home page with correct user data', async () => {
+        await homePage.signUpOnHomepage(dataHelper._username, dataHelper._correctEmail, dataHelper._correctPass);
+        await modalPopup.closeHomeModalPopup();
         expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await homePage.getAccountName()).toEqual(dataHelper._username);
         expect(await basePage.isSignedOut()).toBe(false);
     });
 
     it('Should Sign out well', async () => {
-        await homePage._accountImage.click();
-        await browserHelper.WaitElementClikable(homePage._signOutBtn);
-        await homePage._signOutBtn.click();
-        await browserHelper.WaitElementVisible(signedOutPage._signedOutTxt);
-        await browserHelper.WaitElementClikable(signedOutPage._goodreadsHomeLnk);
-        await signedOutPage._goodreadsHomeLnk.click();
+        await homePage.signOut();
+        await browserHelper.WaitElementVisible(homePage._signInForm);
         expect(await homePage._signInForm.isPresent()).toBe(true);
         expect(await homePage._promoHeader.isPresent()).toBe(true);
         expect(await basePage.isSignedOut()).toBe(true);
     });
 
 
-    it('Should get consistant alert when try to Sign up with all blank fields', async () => {
+    it('Should get consistant alert when try to Sign up with blank fields', async () => {
         await browserHelper.WaitElementClikable(homePage._signUpBtn);
         await homePage._signUpBtn.click();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         await browserHelper.WaitElementClikable(signUpPage._captchaCbx);
         await signUpPage._captchaCbx.click();
+        await browser.sleep(3000);
         await signUpPage._signUpBtn.click();
         expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter a name to sign up for Goodreads.");
-    });
-
-    it('Should get consistant alert when try to Sign up with blank Email field', async () => {
-        await signUpPage._signUpNameFld.click();
-        await signUpPage._signUpNameFld.sendKeys(dataHelper._username);
-        await signUpPage._captchaCbx.click();
-        await signUpPage._signUpBtn.click();
-        await browserHelper.WaitElementVisible(signUpPage._pageTitle);
-        expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter an email address to sign up for Goodreads.");
     });
 
     it('Should get consistant alert when try to Sign up with blank Name field', async () => {
         await signUpPage.clearFlds();
-        await signUpPage._signUpEmailFld.click();
-        await signUpPage._signUpEmailFld.sendKeys(dataHelper._correctEmail);
-        await signUpPage._captchaCbx.click();
-        await signUpPage._signUpBtn.click();
+        await signUpPage.typeEmailOnSignUpPage(dataHelper._correctEmail);
+        await signUpPage.typePasswordOnSignUpPage(dataHelper._correctPass);
+        await this._captchaCbx.click();
+        await browser.sleep(3000);
+        await this._signUpBtn.click();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter a name to sign up for Goodreads.");
     });
 
+    it('Should get consistant alert when try to Sign up with blank Email field', async () => {
+        await signUpPage.clearFlds();
+        await signUpPage.typeNameOnSignUpPage(dataHelper._username);
+        await signUpPage.typePasswordOnSignUpPage(dataHelper._correctPass);
+        await this._captchaCbx.click();
+        await browser.sleep(3000);
+        await this._signUpBtn.click();
+        await browserHelper.WaitElementVisible(signUpPage._pageTitle);
+        expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter an email address to sign up for Goodreads.");
+    });
+
     it('Should get consistant alert when try to Sign up with blank Password field', async () => {
-        await signUpPage._signUpNameFld.click();
-        await signUpPage._signUpNameFld.sendKeys(dataHelper._username);
-        await signUpPage._captchaCbx.click();
+        await signUpPage.clearFlds();
+        await signUpPage.typeNameOnSignUpPage(dataHelper._username);
+        await signUpPage.typeEmailOnSignUpPage(dataHelper._correctEmail);
+        await this._captchaCbx.click();
+        await browser.sleep(3000);
         await signUpPage._signUpBtn.click();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter a password of six or more characters");
     });
 
-
     it('Should get consistant alert when try to Sign up without Captcha', async () => {
-        await signUpPage._signUpPassFld.click();
-        await signUpPage._signUpPassFld.sendKeys(dataHelper._correctPass);
+        await signUpPage.clearFlds();
+        await signUpPage.typeNameOnSignUpPage(dataHelper._username);
+        await signUpPage.typeEmailOnSignUpPage(dataHelper._correctEmail);
+        await signUpPage.typePasswordOnSignUpPage(dataHelper._correctPass);
         await signUpPage._signUpBtn.click();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._alertTxt.getText()).toEqual(" CAPTCHA response is incorrect. Please try again.");
@@ -121,13 +111,11 @@ describe('Home Page', () => {
 
     it('Should get consistant alert when try to Sign up with invalid Email', async () => {
         await signUpPage.clearFlds();
-        await signUpPage._signUpNameFld.click();
-        await signUpPage._signUpNameFld.sendKeys(dataHelper._username);
-        await signUpPage._signUpEmailFld.click();
-        await signUpPage._signUpEmailFld.sendKeys(dataHelper._invalidEmail);
-        await signUpPage._signUpPassFld.click();
-        await signUpPage._signUpPassFld.sendKeys(dataHelper._correctPass);
-        await signUpPage._captchaCbx.click();
+        await signUpPage.typeNameOnSignUpPage(dataHelper._username);
+        await signUpPage.typeEmailOnSignUpPage(dataHelper._invalidEmail);
+        await signUpPage.typePasswordOnSignUpPage(dataHelper._correctPass);
+        await this._captchaCbx.click();
+        await browser.sleep(3000);
         await signUpPage._signUpBtn.click();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
@@ -135,19 +123,125 @@ describe('Home Page', () => {
 
     it('Should get consistant alert when try to Sign up with invalid Password', async () => {
         await signUpPage.clearFlds();
-        await signUpPage._signUpNameFld.click();
-        await signUpPage._signUpNameFld.sendKeys(dataHelper._username);
-        await signUpPage._signUpEmailFld.click();
-        await signUpPage._signUpEmailFld.sendKeys(dataHelper._correctEmail);
-        await signUpPage._signUpPassFld.click();
-        await signUpPage._signUpPassFld.sendKeys(dataHelper._invalidPass);
+        await signUpPage.typeNameOnSignUpPage(dataHelper._username);
+        await signUpPage.typeEmailOnSignUpPage(dataHelper._invalidEmail);
+        await signUpPage.typePasswordOnSignUpPage(dataHelper._invalidPass);
         await signUpPage._captchaCbx.click();
+        await browser.sleep(3000);
         await signUpPage._signUpBtn.click();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter a password of six or more characters");
     });
 
   });
+
+
+  xdescribe('Sign in feature', () => {
+
+    it('Should Sign in via Home page with correct user data', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._correctEmail, dataHelper._correctPass);
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+        expect(await homePage.getAccountName()).toEqual(dataHelper._username);
+    });
+
+
+    it('Should get consistant alert when try to Sign in with all blank fields', async () => {
+        await homePage.signOut();
+        await homePage.signInOnHomepage(null, null);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+    });
+
+    it('Should get consistant alert when try to Sign in with blank Email field', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(null, dataHelper._correctPass);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+    });
+
+
+    it('Should get consistant alert when try to Sign in with blank Password field', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._correctEmail, null);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+    });
+
+
+    it('Should get consistant alert when try to Sign up with incorrect Email', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._incorrectEmail, dataHelper._correctPass);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+
+    });
+
+    it('Should get consistant alert when try to Sign up with incorrect Password', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._correctEmail, dataHelper._incorrectPass);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+
+    });
+
+    it('Should get consistant alert when try to Sign up with invalid Email', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._invalidEmail, dataHelper._correctPass);
+        expect (await basePage._mainLogo.isPresent()).toBe(true);
+        expect(await homePage._signInEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
+
+    });
+
+    it('Should get consistant alert when try to Sign up with invalid Password', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._correctEmail, dataHelper._invalidPass);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+    });
+
+    xit('Should Sign in via Facebook', async () => {
+        await browser.navigate().back();
+        await homePage.signInWithFB(dataHelper._socialNetworksLogin, dataHelper._socialNetworksPass);
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+    });
+
+    xit('Should Sign in via Twitter', async () => {
+        await browserHelper.WaitElementClikable(this._accountImage);
+        await this._accountImage.click();
+        await homePage.signOut();
+        await homePage.signInWithTwitter(dataHelper._socialNetworksLogin, dataHelper._socialNetworksPass);
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+    });
+
+    xit('Should Sign in via Google', async () => {
+        await browserHelper.WaitElementClikable(this._accountImage);
+        await this._accountImage.click();
+        await homePage.signOut();
+        await homePage.signInWithGoogle(dataHelper._socialNetworksLogin, dataHelper._socialNetworksPass);
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+    });
+
+    xit('Should Sign in via Amazon', async () => {
+        await browserHelper.WaitElementClikable(this._accountImage);
+        await this._accountImage.click();
+        await homePage.signOut();
+        await homePage.signInWithAmazon(dataHelper._socialNetworksLogin, dataHelper._socialNetworksPass);
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+    });
+
+});
+
 
 
 });

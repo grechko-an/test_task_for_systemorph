@@ -7,7 +7,6 @@ export class GettingStartedPage {
    
     constructor() {
         this._gettingStarted = element(by.css('div[class="headerTitle"]'));
-        
     }
 }
 
