@@ -1,7 +1,7 @@
 import { $, ElementFinder, ElementArrayFinder, browser, element, by, $$ } from "protractor";
 
 
-export class GettingStartedPage {
+export class GettingStarted {
     
     public _gettingStarted: ElementFinder;
    

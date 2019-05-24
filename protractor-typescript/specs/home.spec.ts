@@ -6,13 +6,8 @@ import { SignUp } from "../pages/signUpPage.po";
 import { SignIn } from "../pages/signInPage.to"
 import { DataHelper } from "../data/dataHelper";
 import { ModalPopup } from "../pages/modalPopup.po";
+import { ForgotPassword } from "../pages/forgotPasswordPage.po"
 
-
-import chai = require('chai');
-import { async } from 'q';
-
-//chai.use(require('chai-smoothie'));
-//const expect = chai.expect;
 
 describe('Home Page', () => {
 
@@ -22,7 +17,7 @@ describe('Home Page', () => {
   const signInPage = new SignIn();
   const dataHelper = new DataHelper();
   const modalPopup = new ModalPopup();
-
+  const forgotPasswordPage = new ForgotPassword();
 
 
   describe('Smoke test', () => {
@@ -147,7 +142,6 @@ describe('Home Page', () => {
         expect(await homePage.getAccountName()).toEqual(dataHelper._username);
     });
 
-
     it('Should get consistant alert when try to Sign in with all blank fields', async () => {
         await homePage.signOut();
         await homePage.signInOnHomepage(null, null);
@@ -202,6 +196,31 @@ describe('Home Page', () => {
         expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
     });
 
+    it('Should be signed in when Remember me feature is on', async () => {
+        await browser.navigate().back();
+        if (! await homePage._rememberMeCbx.isSelected()) {
+            await homePage._rememberMeCbx.click();
+        }
+        await homePage.signInOnHomepage(dataHelper._correctEmail, dataHelper._correctPass);
+        await modalPopup.closeHomeModalPopup();
+        await browserHelper.WaitElementVisible(homePage._accountImage);
+        await browser.refresh();
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+        expect(await homePage.getAccountName()).toEqual(dataHelper._username);
+    });
+
+    it('Should be able to reset Password via Forgot feature', async () => {
+        await browserHelper.WaitElementClikable(this._accountImage);
+        await this._accountImage.click();
+        await homePage.signOut();
+        await browserHelper.WaitElementClikable(homePage._forgotItLnk);
+        await homePage._forgotItLnk.click();
+        await forgotPasswordPage.resetPass(dataHelper._correctEmail);
+        expect(await forgotPasswordPage._resultMsg).toContain(" We'll send instructions to this email");
+    });
+
     xit('Should Sign in via Facebook', async () => {
         await browser.navigate().back();
         await homePage.signInWithFB(dataHelper._socialNetworksLogin, dataHelper._socialNetworksPass);
@@ -241,6 +260,32 @@ describe('Home Page', () => {
     });
 
 });
+
+  xdescribe('Best books for summer block', () => {
+
+    it('Should Sign in via Home page with correct user data', async () => {
+        await browser.navigate().back();
+        await homePage.signInOnHomepage(dataHelper._correctEmail, dataHelper._correctPass);
+        await modalPopup.closeHomeModalPopup();
+        expect(await homePage._accountImage.isPresent()).toBe(true);
+        expect(await basePage.isSignedOut()).toBe(false);
+        expect(await homePage.getAccountName()).toEqual(dataHelper._username);
+    });
+
+
+    it('Should get consistant alert when try to Sign in with all blank fields', async () => {
+        await homePage.signOut();
+        await homePage.signInOnHomepage(null, null);
+        await browserHelper.WaitElementVisible(signInPage._alertTxt);
+        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+    });
+
+
+
+
+
+
+  });
 
 
 

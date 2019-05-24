@@ -12,10 +12,6 @@ class BrowserHelper {
         await browser.wait(EC.visibilityOf(element), timeout);
     }
 
-    public async IsElementSelected(element: ElementFinder) {
-      await browser.wait(EC.elementToBeSelected(element), timeout);
-    }
-
 }
 
 export let browserHelper: BrowserHelper = new BrowserHelper();

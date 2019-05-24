@@ -1,11 +1,11 @@
 import { $, ElementFinder, ElementArrayFinder, browser, element, by, $$ } from "protractor";
 import { browserHelper } from '../helpers/browserHelper';
 import { BasePage } from "../pages/basePage.po";
-import { GettingStartedPage } from "../pages/gettingStartedPage.po"
+import { GettingStarted } from "../pages/gettingStartedPage.po"
 
 
 const basePage = new BasePage();
-const gettingStartedPage = new GettingStartedPage();
+const gettingStartedPage = new GettingStarted();
 
 
 export class SignUp {
@@ -80,31 +80,36 @@ export class SignUp {
     await browser.sleep(3000);
   }
 
-
-  public async checkIsNameFieldHaveCorrectUserData(name: string): Promise<void> {
+  public async checkIsNameFieldHaveCorrectUserData(): Promise<void> {
     try {
-      expect(this._signUpNameFld.getAttribute('value')).toEqual(name);
+      if (await this._signUpNameFld.getAttribute('value') == null) {
+        throw new Error();
+      }
     }
     catch(e) {
-      console.log('Name field in Sign Up page does not match with Name typed on Home page', e);
+      console.log('Name field in Sign Up page is empty');
     }
   }
 
-  public async checkIsEmailFieldHaveCorrectUserData(email: string): Promise<void> {
+  public async checkIsEmailFieldHaveCorrectUserData(): Promise<void> {
     try {
-      expect(this._signUpEmailFld.getAttribute('value')).toEqual(email);
+      if (await this._signUpEmailFld.getAttribute('value') == null) {
+        throw new Error();
+      }
     }
     catch(e) {
-      console.log('Email in Sign Up page does not match with Email typed on Home page', e);
+      console.log('Email field in Sign Up page is empty');
     }
   }
 
-  public async checkIsPasswordFieldHaveCorrectUserData(password: string): Promise<void> {
+  public async checkIsPasswordFieldHaveCorrectUserData(): Promise<void> {
     try {
-      expect(this._signUpPassFld.getAttribute('value')).toEqual(password);
+      if (await this._signUpPassFld.getAttribute('value') == null) {
+        throw new Error();
+      }
     }
     catch(e) {
-      console.log('Password in Sign Up page does not match with Password typed on Home page', e);
+      console.log('Password field in Sign Up page is empty');
     }
   }
 }

@@ -3,13 +3,13 @@ import { browserHelper } from '../helpers/browserHelper';
 import { BasePage } from "../pages/basePage.po";
 import { SignedOutPage } from "../pages/signedOutPage.po";
 import { SignUp } from "../pages/signUpPage.po";
-import { GettingStartedPage } from "../pages/gettingStartedPage.po";
+import { GettingStarted } from "../pages/gettingStartedPage.po";
 import { SocialNetworks } from "./socialNetworksPages.po";
 
 const basePage = new BasePage();
 const signedOutPage = new SignedOutPage();
 const signUpPage = new SignUp();
-const gettingStartedPage = new GettingStartedPage();
+const gettingStartedPage = new GettingStarted();
 const socialNetworkPages = new SocialNetworks(); 
 
 export class HomePage {
@@ -32,6 +32,7 @@ export class HomePage {
   public _signInPasswordFld: ElementFinder;
   public _rememberMeCbx: ElementFinder;
   public _signInBtn: ElementFinder;
+  public _forgotItLnk: ElementFinder;
   //SocialNetwork
   public _fbSignInBtn: ElementFinder;
   public _twitterSignInBtn: ElementFinder;
@@ -60,6 +61,7 @@ export class HomePage {
     this._twitterSignInBtn = element(by.css('img[title="Sign in with your Twitter account"]'));
     this._googleSignInBtn = element(by.css('img[title="Sign in with your Google account"]'));
     this._amazonSignInBtn = element(by.css('img[title="Sign in with your Amazon account"]'));
+    this._forgotItLnk = element(by.id('userForgotPassword'))
   };
 
 
@@ -75,9 +77,9 @@ export class HomePage {
     await this._signUpPassFld.sendKeys(password);
     await this._signUpBtn.click();
     await browserHelper.WaitElementVisible(signUpPage._pageTitle);
-    await signUpPage.checkIsNameFieldHaveCorrectUserData(name);
-    await signUpPage.checkIsEmailFieldHaveCorrectUserData(email);
-    await signUpPage.checkIsPasswordFieldHaveCorrectUserData(password);
+    await signUpPage.checkIsNameFieldHaveCorrectUserData();
+    await signUpPage.checkIsEmailFieldHaveCorrectUserData();
+    await signUpPage.checkIsPasswordFieldHaveCorrectUserData();
     await browserHelper.WaitElementClikable(signUpPage._captchaCbx);
     await signUpPage._captchaCbx.click();
     await browser.sleep(3000);
