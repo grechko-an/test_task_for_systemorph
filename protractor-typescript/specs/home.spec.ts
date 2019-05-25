@@ -1,4 +1,4 @@
-import { browser } from 'protractor';
+import { browser, protractor } from 'protractor';
 import { BasePage } from "../pages/basePage.po"
 import { HomePage } from '../pages/homePage.po';
 import { browserHelper } from "../helpers/browserHelper";
@@ -7,9 +7,12 @@ import { SignIn } from "../pages/signInPage.to"
 import { DataHelper } from "../data/dataHelper";
 import { ModalPopup } from "../pages/modalPopup.po";
 import { ForgotPassword } from "../pages/forgotPasswordPage.po"
+import { url } from 'inspector';
 
 
 describe('Home Page', () => {
+
+  const EC = protractor.ExpectedConditions;
 
   const basePage = new BasePage();
   const homePage = new HomePage();
@@ -23,10 +26,10 @@ describe('Home Page', () => {
   describe('Smoke test', () => {
 
       it('Home page should be opened', async () => {
-          await browserHelper.WaitElementVisible(homePage._promoHeader);
-          expect(await homePage._promoHeader.isPresent()).toBe(true);
+          await browserHelper.WaitElementVisible(basePage._mainLogo);
+          expect(await basePage._mainLogo.isDisplayed()).toBe(true);
           await browserHelper.WaitElementVisible(homePage._signInForm);
-          expect(await homePage._signInForm.isPresent()).toBe(true);
+          expect(await homePage._signInForm.isDisplayed()).toBe(true);
       });
 
   });
@@ -196,7 +199,7 @@ describe('Home Page', () => {
         expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
     });
 
-    it('Should be signed in when Remember me feature is on', async () => {
+    it('Should be Signed in when Remember me feature is on', async () => {
         await browser.navigate().back();
         if (! await homePage._rememberMeCbx.isSelected()) {
             await homePage._rememberMeCbx.click();
@@ -259,31 +262,158 @@ describe('Home Page', () => {
         expect(await basePage.isSignedOut()).toBe(false);
     });
 
-});
+  });
 
-  xdescribe('Best books for summer block', () => {
+  xdescribe('Promo block', () => {
 
-    it('Should Sign in via Home page with correct user data', async () => {
+    it('Promo image should link to Promo page', async () => {
         await browser.navigate().back();
-        await homePage.signInOnHomepage(dataHelper._correctEmail, dataHelper._correctPass);
-        await modalPopup.closeHomeModalPopup();
-        expect(await homePage._accountImage.isPresent()).toBe(true);
-        expect(await basePage.isSignedOut()).toBe(false);
-        expect(await homePage.getAccountName()).toEqual(dataHelper._username);
+        if (homePage._promoHeader.isDisplayed()) {
+        await homePage.goToPromoPage(homePage._promoHeader);
+        expect(browser.getCurrentUrl()).toContain("www.goodreads.com/blog/show");
+        await browser.navigate().back();
+        }
     });
 
+  });
 
-    it('Should get consistant alert when try to Sign in with all blank fields', async () => {
-        await homePage.signOut();
-        await homePage.signInOnHomepage(null, null);
-        await browserHelper.WaitElementVisible(signInPage._alertTxt);
-        expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
+  xdescribe('Best books block', () => {
+
+    it('Buttons in Best books bloock should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._signInForm);
+        if (homePage._bestBooksBlock.isDisplayed()) {
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._bestBooksBtns);
+        }
     });
 
+    it('Links in Best books bloock should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._signInForm);
+        if (homePage._bestBooksBlock.isDisplayed()) {
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._bestBooksLnks);
+        }
+    });
 
+  });
 
+  xdescribe('Questions text block', () => {
 
+    it('Questions and answers text block should be displayed', async () => {
+        await browserHelper.WaitElementVisible(homePage._signInForm);
+        await homePage.textsArePresent(homePage._qtbFirstQuestion, homePage._qtbSecondQuestion, homePage._qtbFirstAnswer, homePage._qtbSecondAnswer);
+    });
 
+  });
+
+  xdescribe('Discovery block', () => {
+
+    it('Links in Discovery block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._discoveryBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._discoverySimilarLnks);
+        await browserHelper.WaitElementVisible(homePage._discoveryBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._discoveryReflectedLnks);
+    });
+
+  });
+
+  xdescribe('Discovery block', () => {
+
+    it('Links in Discovery block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._discoveryBlock);
+        await homePage.checkImageLinksAreWorkingWell(homePage._discoverySimilarLnks);
+        await browserHelper.WaitElementVisible(homePage._discoveryBlock);
+        await homePage.checkImageLinksAreWorkingWell(homePage._discoveryReflectedLnks);
+    });
+
+  });
+
+  xdescribe('Seearch and browse block', () => {
+
+    it('Links in Search and browse block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._searchBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._searchLnks);
+    });
+
+    it('Search feature should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._searchBlock);
+        await browserHelper.WaitElementClikable(homePage._searchFld);
+        await homePage._searchFld.click();
+        await homePage._searchFld.sendKeys(dataHelper._searchWord);
+        await homePage._searchBtn.click();
+        expect(await browser.getCurrentUrl()).toContain("/search");
+        expect(await browser.getCurrentUrl()).toContain("dataHelper._searchWord");
+        expect(await basePage._siteHeader.isDisplayed()).toBe(true);
+        await browser.navigate().back();
+    });
+
+  });
+
+  xdescribe('Quotes block', () => {
+
+    it('Links in Quotes block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._quotesBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._quotesLnks);
+    });
+
+    it('Linked image in Quotes block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._quotesBlock);
+        await homePage._quotesLnkImg.click
+        expect(await browser.getCurrentUrl()).toContain('author/show/');
+        expect(await basePage._siteHeader.isDisplayed()).toBe(true);
+        await browser.navigate().back();
+    });
+
+    it('Quotes feature should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._quotesBlock);
+        let firstQuote: string = await homePage._quotesQuote.getText();
+        await browser.sleep(13000);
+        let nextQuote: string = await homePage._quotesQuote.getText();
+        expect(await firstQuote).not.toEqual(nextQuote)
+    });
+
+  });
+
+  xdescribe('Choice awards block', () => {
+
+    it('Links in Choice awards block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._awardsBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._awardsLnks);
+    });
+
+    it('Linked image in Choice awards block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._awardsBlock);
+        await browserHelper.WaitElementClikable(homePage._awardsLnkImg);
+        await homePage._awardsLnkImg.click();
+        expect(await browser.getCurrentUrl()).toContain('choiceawards/');
+        expect(await basePage._siteHeader.isDisplayed()).toBe(true);
+        await browser.navigate().back();
+    });
+
+  });
+
+  xdescribe('Sponsored block', () => {
+
+    it('Links in Sponsored block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._sponsoredBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._sponsoredLnks);
+    });
+
+  });
+
+  xdescribe('Love lists block', () => {
+
+    it('Links in Love lists block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._loveLsBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._loveLsLnks);
+    });
+
+  });
+
+  xdescribe('Publisher block', () => {
+
+    it('Links in Love lists block should work well', async () => {
+        await browserHelper.WaitElementVisible(homePage._publisherBlock);
+        await homePage.checkLinksAndButtonsAreWorkingWell(homePage._publisherBtns);
+    });
 
   });
 

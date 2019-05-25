@@ -17,7 +17,6 @@ export class HomePage {
   //Base
   public _siteSloganText: ElementFinder;
   public _signInForm: ElementFinder;
-  public _promoHeader: ElementFinder;
   public _accountImage: ElementFinder;
   public _homeBtn: ElementFinder;
   public _signOutBtn: ElementFinder;
@@ -38,9 +37,45 @@ export class HomePage {
   public _twitterSignInBtn: ElementFinder;
   public _googleSignInBtn: ElementFinder;
   public _amazonSignInBtn: ElementFinder;
-
-
-
+  //Promo block
+  public _promoHeader: ElementFinder;
+  //Best books block
+  public _bestBooksBlock: ElementFinder;
+  public _bestBooksBtns: ElementArrayFinder;
+  public _bestBooksLnks: ElementArrayFinder;
+  //Questions text block
+  public _qtbFirstQuestion: ElementFinder;
+  public _qtbFirstAnswer: ElementFinder;
+  public _qtbSecondQuestion: ElementFinder;
+  public _qtbSecondAnswer: ElementFinder;
+  //Discover block
+  public _discoveryBlock: ElementFinder;
+  public _discoverySimilarLnks: ElementArrayFinder;
+  public _discoveryReflectedLnks: ElementArrayFinder;
+  //Search and browse block
+  public _searchBlock: ElementFinder;
+  public _searchLnks: ElementArrayFinder;
+  public _searchFld: ElementFinder;
+  public _searchBtn: ElementFinder;
+  //Quotes block
+  public _quotesBlock: ElementFinder;
+  public _quotesLnks: ElementArrayFinder;
+  public _quotesQuote: ElementFinder;
+  public _quotesLnkImg: ElementFinder;
+  //Choise awards block
+  public _awardsBlock: ElementFinder;
+  public _awardsLnks: ElementArrayFinder;
+  public _awardsLnkImg: ElementFinder;
+  //Sponsored books block
+  public _sponsoredBlock: ElementFinder;
+  public _sponsoredLnks: ElementArrayFinder;
+  //Love lists block
+  public _loveLsBlock: ElementFinder;
+  public _loveLsLnks: ElementArrayFinder;
+  //Publisher block
+  public _publisherBlock: ElementFinder;
+  public _publisherBtns: ElementArrayFinder;
+  
 
   constructor() {
     this._siteSloganText = element(by.css('div[id="headline"] img'));
@@ -62,9 +97,45 @@ export class HomePage {
     this._googleSignInBtn = element(by.css('img[title="Sign in with your Google account"]'));
     this._amazonSignInBtn = element(by.css('img[title="Sign in with your Amazon account"]'));
     this._forgotItLnk = element(by.id('userForgotPassword'))
-  };
-
-
+    
+    //Best books block
+    this._bestBooksBlock = element(by.css('div[class="promoBox u-textAlignCenter"]'));
+    this._bestBooksBtns = element.all(by.css('div[class="buttonContainer"]'));
+    this._bestBooksLnks = element.all(by.css('li[class="gr-promoListOfLinks__item"]'));
+    //Questions text block
+    this._qtbFirstQuestion = element(by.css('div[class="sellingPointBoxLeft"] h2'));
+    this._qtbFirstAnswer = element(by.css('div[class="sellingPointBoxLeft"] p'));
+    this._qtbSecondQuestion = element(by.css('div[class="sellingPointBoxRight"] h2'));
+    this._qtbSecondAnswer = element(by.css('div[class="sellingPointBoxRight"] p'));
+    //Discovery block
+    this._discoveryBlock = element(by.id('discoveryBox'));
+    this._discoverySimilarLnks = element.all(by.css('div[id="discoveryBox"] img[class="bookImgSimilar"]'));
+    this._discoveryReflectedLnks = element.all(by.css('div[id="discoveryBox"] img[class="reflected"]'));
+    //Search and browse block
+    this._searchBlock = element(by.id('browseBox'));
+    this._searchLnks = element.all(by.css('div[id="browseBox"] a[class="gr-hyperlink"]'));
+    this._searchFld = element(by.id('sitesearch_field'));
+    this._searchBtn = element(by.css('a[class="submitLink"] img'));
+    //Quotes block
+    this._quotesBlock = element(by.css('div[class="featureTeaserBox u-clearBoth"]'));
+    this._quotesLnks = element.all(by.css('div[class="featureTeaserBox__quotesBoxLinks"]  a'));
+    this._quotesQuote = element(by.id('quotes'));
+    this._quotesLnkImg = element(by.css('div[id="quotes"] img'));
+    //Choise awards block
+    this._awardsBlock = element(by.id('choiceAwardCategories'));
+    this._awardsLnks = element.all(by.css('div[id="choiceAwardCategories"] a[class="gr-hyperlink"]'));
+    this._awardsLnkImg = element(by.id('choiceLogo'));
+    //Sponsored books block
+    this._sponsoredBlock = element(by.css('div[class="selfServeAds"]'));
+    this._sponsoredLnks = element.all(by.css('div[class="selfServeAds"] a'));
+    //Love lists block
+    this._loveLsBlock = element(by.id('listsTeaserBox'));
+    this._loveLsLnks = element.all(by.css('div[id="listsTeaserBox"] a'));
+    //Publisher block
+    this._publisherBlock = element(by.id('authorsTeaserBox'));
+    this._publisherBtns = element.all(by.css('div[id="authorsTeaserBox"] a'))
+    };
+    
 
   public async signUpOnHomepage(name: string, email: string, password: string) : Promise<void> {
     await browserHelper.WaitElementClikable(this._signUpBtn);
@@ -163,6 +234,38 @@ export class HomePage {
     return;
   };
 
+  public async goToPromoPage(element): Promise<void> {
+    await browserHelper.WaitElementClikable(element);
+    await this._promoHeader.click();
+  }
+
+  public async checkLinksAndButtonsAreWorkingWell(arrayOfElements): Promise<void> {
+    for (var element of arrayOfElements) {
+      await browserHelper.WaitElementClikable(element);
+      let pathName = await element.getAttribute('pathname');
+      await element.click();
+      expect(await browser.getCurrentUrl()).toContain(pathName);
+      expect(await basePage._siteHeader.isDisplayed()).toBe(true);
+      await browser.navigate().back();
+    }
+  }
+
+  public async checkImageLinksAreWorkingWell(arrayOfElements): Promise<void> {
+    for (var element of arrayOfElements) {
+      await browserHelper.WaitElementClikable(element);
+      await element.click();
+      expect(await browser.getCurrentUrl()).toContain("book/show/");
+      expect(await basePage._siteHeader.isDisplayed()).toBe(true);
+      await browser.navigate().back();
+    }
+  }
+
+  public async textsArePresent(q1: ElementFinder, q2: ElementFinder, a1: ElementFinder, a2: ElementFinder): Promise<void> {
+    expect(await q1.isDisplayed()).toBe(true);
+    expect(await q2.isDisplayed()).toBe(true);
+    expect(await a1.isDisplayed()).toBe(true);
+    expect(await a2.isDisplayed()).toBe(true);
+  }
 
 
 
