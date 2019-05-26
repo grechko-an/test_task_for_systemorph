@@ -38,53 +38,6 @@ export class SignUp {
     this._alertTxt = element(by.css('p[class="flash notice"]'));
   };
 
-  public async clearFlds(): Promise<void> {
-      await this._signUpNameFld.clear();
-      await this._signUpEmailFld.clear();
-      await this._signUpPassFld.clear();
-  };
-
-  public async signUpOnSignUpPage(name: string, email: string, password: string): Promise<void> {
-    await browserHelper.WaitElementVisible(this._pageTitle);
-    await this._signUpNameFld.click();
-    await this._signUpNameFld.sendKeys(name);
-    await this._signUpEmailFld.click();
-    await this._signUpEmailFld.sendKeys(email);
-    await this._signUpPassFld.click();
-    await this._signUpPassFld.sendKeys(password);
-    await browserHelper.WaitElementClikable(this._captchaCbx);
-    await this._captchaCbx.click();
-    await browser.sleep(3000);
-    await this._signUpBtn.click();
-    await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
-    await browserHelper.WaitElementClikable(basePage._mainLogo);
-    await basePage._mainLogo.click();
-  };
-
-  public async typeNameOnSignUpPage(name: string): Promise<void> {
-    await this._signUpNameFld.click();
-    await this._signUpNameFld.sendKeys(name);
-    await browserHelper.WaitElementClikable(this._captchaCbx);
-    await this._captchaCbx.click();
-    await browser.sleep(3000);
-  };
-
-  public async typeEmailOnSignUpPage(email: string): Promise<void> {
-    await this._signUpEmailFld.click();
-    await this._signUpEmailFld.sendKeys(email);
-    await browserHelper.WaitElementClikable(this._captchaCbx);
-    await this._captchaCbx.click();
-    await browser.sleep(3000);
-  };
-
-  public async typePasswordOnSignUpPage(password: string): Promise<void> {
-    await this._signUpPassFld.click();
-    await this._signUpPassFld.sendKeys(password);
-    await browserHelper.WaitElementClikable(this._captchaCbx);
-    await this._captchaCbx.click();
-    await browser.sleep(3000);
-  };
-
   public async clickCaptchaCbx(): Promise<void> {
     await browserHelper.WaitElementClikable(this._captchaCbx);
     await this._captchaCbx.click();
