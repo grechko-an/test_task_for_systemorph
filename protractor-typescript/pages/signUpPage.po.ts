@@ -19,25 +19,30 @@ export class SignUp {
   public _signUpPassFld: ElementFinder;
   public _signUpBtn: ElementFinder;
   public _captchaCbx: ElementFinder;
+  public _fields: ElementArrayFinder;
   //Alert
   public _alertTxt: ElementFinder;
 
   constructor() {
+    //Texts
     this._pageTitle = element(by.css('div[class="column_right"] h1'));
     this._signUpWithEmail = element(by.css('div[class="signup"]'));
+    //Sign up form
     this._signUpNameFld = element(by.id('user_first_name'));
     this._signUpEmailFld = element(by.id('user_email'));
     this._signUpPassFld = element(by.id('user_password'));
     this._signUpBtn = element(by.css('input[value="Sign up"]'));
     this._captchaCbx = element(by.id('recaptcha-anchor'));
+    this._fields = element.all(by.css('input[name*="user"]'));
+    //Alert
     this._alertTxt = element(by.css('p[class="flash notice"]'));
-  }
+  };
 
   public async clearFlds(): Promise<void> {
       await this._signUpNameFld.clear();
       await this._signUpEmailFld.clear();
       await this._signUpPassFld.clear();
-  }
+  };
 
   public async signUpOnSignUpPage(name: string, email: string, password: string): Promise<void> {
     await browserHelper.WaitElementVisible(this._pageTitle);
@@ -54,7 +59,7 @@ export class SignUp {
     await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
     await browserHelper.WaitElementClikable(basePage._mainLogo);
     await basePage._mainLogo.click();
-  }
+  };
 
   public async typeNameOnSignUpPage(name: string): Promise<void> {
     await this._signUpNameFld.click();
@@ -62,7 +67,7 @@ export class SignUp {
     await browserHelper.WaitElementClikable(this._captchaCbx);
     await this._captchaCbx.click();
     await browser.sleep(3000);
-  }
+  };
 
   public async typeEmailOnSignUpPage(email: string): Promise<void> {
     await this._signUpEmailFld.click();
@@ -70,7 +75,7 @@ export class SignUp {
     await browserHelper.WaitElementClikable(this._captchaCbx);
     await this._captchaCbx.click();
     await browser.sleep(3000);
-  }
+  };
 
   public async typePasswordOnSignUpPage(password: string): Promise<void> {
     await this._signUpPassFld.click();
@@ -78,38 +83,24 @@ export class SignUp {
     await browserHelper.WaitElementClikable(this._captchaCbx);
     await this._captchaCbx.click();
     await browser.sleep(3000);
-  }
+  };
 
-  public async checkIsNameFieldHaveCorrectUserData(): Promise<void> {
-    try {
-      if (await this._signUpNameFld.getAttribute('value') == null) {
-        throw new Error();
-      }
-    }
-    catch(e) {
-      console.log('Name field in Sign Up page is empty');
-    }
-  }
+  public async clickCaptchaCbx(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._captchaCbx);
+    await this._captchaCbx.click();
+    await browser.sleep(3000);
+  };
 
-  public async checkIsEmailFieldHaveCorrectUserData(): Promise<void> {
-    try {
-      if (await this._signUpEmailFld.getAttribute('value') == null) {
-        throw new Error();
+  public async checkFieldsHaveTextsFromHomePage(arrayOfElements): Promise<void> {
+    for (var element of arrayOfElements) {
+      try {
+        if (element.getAttribute('value') == null) {
+          throw new Error();
+        }
       }
-    }
-    catch(e) {
-      console.log('Email field in Sign Up page is empty');
-    }
-  }
-
-  public async checkIsPasswordFieldHaveCorrectUserData(): Promise<void> {
-    try {
-      if (await this._signUpPassFld.getAttribute('value') == null) {
-        throw new Error();
+      catch(e) {
+        console.log('One or more Field in Sign Up page is empty');
       }
-    }
-    catch(e) {
-      console.log('Password field in Sign Up page is empty');
-    }
+    } 
   }
 }

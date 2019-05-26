@@ -16,17 +16,18 @@ export class HomePage {
   
   //Base
   public _siteSloganText: ElementFinder;
-  public _signInForm: ElementFinder;
   public _accountImage: ElementFinder;
   public _homeBtn: ElementFinder;
   public _signOutBtn: ElementFinder;
   public _accountName: ElementFinder;
   //Sign up form
+  public _signUpForm: ElementFinder;
   public _signUpNameFld: ElementFinder;
   public _signUpEmailFld: ElementFinder;
   public _signUpPassFld: ElementFinder;
   public _signUpBtn: ElementFinder;
   //Sign in form
+  public _signInForm: ElementFinder;
   public _signInEmailFld: ElementFinder;
   public _signInPasswordFld: ElementFinder;
   public _rememberMeCbx: ElementFinder;
@@ -75,29 +76,50 @@ export class HomePage {
   //Publisher block
   public _publisherBlock: ElementFinder;
   public _publisherBtns: ElementArrayFinder;
+  //Ads blocks
+  public _topAdElement: ElementFinder;
+  public _downAdElement: ElementFinder;
+  //Company block
+  public _companyBlock: ElementFinder;
+  public _companyLnks: ElementArrayFinder;
+  //Work with us block
+  public _wwuBlock: ElementFinder;
+  public _wwuLnks: ElementArrayFinder;
+  //Connect block
+  public _connectBlock: ElementFinder;
+  public _connectBtns: ElementArrayFinder;
+  //Mobile stores block
+  public _msBlock: ElementFinder;
+  public _msLnks: ElementArrayFinder;
   
 
   constructor() {
+    //Base
     this._siteSloganText = element(by.css('div[id="headline"] img'));
-    this._signInForm = element(by.id('signInForm'));
-    this._promoHeader = element(by.css('div[class="promoHeader__promoMastheadLogoContainer"]'));
-    this._signUpBtn = element(by.css('input[value="Sign up"]'));
     this._accountImage = element(by.css('div[class="dropdown dropdown--profileMenu"] a span img'));
+    this._homeBtn = element(by.xpath('//nav[@class="siteHeader__primaryNavInline"]//a[text()="Home"]'));
     this._signOutBtn = element.all(by.css('div[class*="siteHeader__subNav siteHeader"] li[role="menuitem"]')).last();
+    this._accountName = element(by.css('span[class="siteHeader__subNavLink gr-h3 gr-h3--noMargin"]'));
+    //Sign up form
+    this._signUpForm = element(by.id('newAccountBox'));
     this._signUpNameFld = element(by.id('user_first_name'));
     this._signUpEmailFld = element(by.id('user_email'));
     this._signUpPassFld = element(by.id('user_password_signup'));
-    this._homeBtn = element(by.xpath('//nav[@class="siteHeader__primaryNavInline"]//a[text()="Home"]'));
+    this._signUpBtn = element(by.css('input[value="Sign up"]'));
+    //Sign in form
+    this._signInForm = element(by.id('signInForm'));
     this._signInEmailFld = element(by.id('userSignInFormEmail'));
     this._signInPasswordFld = element(by.id('user_password'));
     this._rememberMeCbx = element(by.id('remember_me'));
     this._signInBtn = element(by.css('div[class="formBox"] input[type="submit"]'));
+    this._forgotItLnk = element(by.id('userForgotPassword'));
+    //SocialNetwork
     this._fbSignInBtn = element(by.css('img[title="Sign in with your Facebook account"]'));
     this._twitterSignInBtn = element(by.css('img[title="Sign in with your Twitter account"]'));
     this._googleSignInBtn = element(by.css('img[title="Sign in with your Google account"]'));
     this._amazonSignInBtn = element(by.css('img[title="Sign in with your Amazon account"]'));
-    this._forgotItLnk = element(by.id('userForgotPassword'))
-    
+    //Promo block
+    this._promoHeader = element(by.css('div[class="promoHeader__promoMastheadLogoContainer"]'));
     //Best books block
     this._bestBooksBlock = element(by.css('div[class="promoBox u-textAlignCenter"]'));
     this._bestBooksBtns = element.all(by.css('div[class="buttonContainer"]'));
@@ -133,13 +155,27 @@ export class HomePage {
     this._loveLsLnks = element.all(by.css('div[id="listsTeaserBox"] a'));
     //Publisher block
     this._publisherBlock = element(by.id('authorsTeaserBox'));
-    this._publisherBtns = element.all(by.css('div[id="authorsTeaserBox"] a'))
+    this._publisherBtns = element.all(by.css('div[id="authorsTeaserBox"] a'));
+    //Ads blocks
+    this._topAdElement = element(by.id('canvas'));
+    this._downAdElement = element(by.css('body[class="amp-animate amp-mode-touch amp-mode-mouse"] div div'));
+    //Company block
+    this._companyBlock = element(by.css('div[class="gr-col-md-3 gr-col-lg-4"]'));
+    this._companyLnks = element.all(by.css('div[class="gr-col-md-3 gr-col-lg-4"] a'));
+    //Work with us block
+    this._wwuBlock = element(by.css('div[class="gr-col-md-4 gr-col-lg-4"]'));
+    this._wwuLnks = element.all(by.css('div[class="gr-col-md-4 gr-col-lg-4"] a'));
+    //Connect block
+    this._connectBlock = element(by.css('div[class="gr-col-md-5 gr-col-lg-4"]'));
+    this._connectBtns = element.all(by.css('div[class="gr-col-md-5 gr-col-lg-4"] a'));
+    //Mobile stores block
+    this._msBlock = element(by.css('div[class="responsiveSiteFooter__appLinksColumnContents"]'));
+    this._msLnks = element.all(by.css('div[class="responsiveSiteFooter__appLinksColumnContents"] a'));
     };
-    
+  
 
-  public async signUpOnHomepage(name: string, email: string, password: string) : Promise<void> {
-    await browserHelper.WaitElementClikable(this._signUpBtn);
-    await this._signUpBtn.click();
+  public async signUpOnHomePage(name: string, email: string, password: string): Promise<void> {
+    await browserHelper.WaitElementClikable(this._signUpForm);
     await this._signUpNameFld.click();
     await this._signUpNameFld.sendKeys(name);
     await this._signUpEmailFld.click();
@@ -147,13 +183,12 @@ export class HomePage {
     await this._signUpPassFld.click();
     await this._signUpPassFld.sendKeys(password);
     await this._signUpBtn.click();
+  };
+
+  public async signUpOnSignUpPage(): Promise<void> {
     await browserHelper.WaitElementVisible(signUpPage._pageTitle);
-    await signUpPage.checkIsNameFieldHaveCorrectUserData();
-    await signUpPage.checkIsEmailFieldHaveCorrectUserData();
-    await signUpPage.checkIsPasswordFieldHaveCorrectUserData();
-    await browserHelper.WaitElementClikable(signUpPage._captchaCbx);
-    await signUpPage._captchaCbx.click();
-    await browser.sleep(3000);
+    await signUpPage.checkFieldsHaveTextsFromHomePage(signUpPage._fields);
+    await signUpPage.clickCaptchaCbx();
     await signUpPage._signUpBtn.click();
     await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
     await browserHelper.WaitElementClikable(basePage._mainLogo);
@@ -230,25 +265,25 @@ export class HomePage {
 
   public async getAccountName() : Promise<string> {
     await this._accountImage.click();
-    await this._accountName.getAttribute("textContent");
+    await this._accountName.getAttribute("innerText");
     return;
   };
 
   public async goToPromoPage(element): Promise<void> {
     await browserHelper.WaitElementClikable(element);
     await this._promoHeader.click();
-  }
+  };
 
   public async checkLinksAndButtonsAreWorkingWell(arrayOfElements): Promise<void> {
     for (var element of arrayOfElements) {
       await browserHelper.WaitElementClikable(element);
-      let pathName = await element.getAttribute('pathname');
+      let url = await element.getAttribute('href');
       await element.click();
-      expect(await browser.getCurrentUrl()).toContain(pathName);
+      expect(await browser.getCurrentUrl()).toEqual(url);
       expect(await basePage._siteHeader.isDisplayed()).toBe(true);
       await browser.navigate().back();
     }
-  }
+  };
 
   public async checkImageLinksAreWorkingWell(arrayOfElements): Promise<void> {
     for (var element of arrayOfElements) {
@@ -258,18 +293,13 @@ export class HomePage {
       expect(await basePage._siteHeader.isDisplayed()).toBe(true);
       await browser.navigate().back();
     }
-  }
+  };
 
   public async textsArePresent(q1: ElementFinder, q2: ElementFinder, a1: ElementFinder, a2: ElementFinder): Promise<void> {
     expect(await q1.isDisplayed()).toBe(true);
     expect(await q2.isDisplayed()).toBe(true);
     expect(await a1.isDisplayed()).toBe(true);
     expect(await a2.isDisplayed()).toBe(true);
-  }
-
-
-
-
-
+  };
 
 }
