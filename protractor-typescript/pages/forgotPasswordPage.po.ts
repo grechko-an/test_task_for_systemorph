@@ -18,7 +18,7 @@ export class ForgotPassword {
     this._resultMsg = element(by.css('p[class="intro"]'));
   };
 
-  public async resetPass(email: string) : Promise<void> {
+  public async ResetPass(email: string) : Promise<void> {
     await browserHelper.WaitElementVisible(this._titleText); 
     await browserHelper.WaitElementClikable(this._emailFld);
     await this._emailFld.click();

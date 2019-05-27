@@ -38,13 +38,18 @@ export class SignUp {
     this._alertTxt = element(by.css('p[class="flash notice"]'));
   };
 
-  public async clickCaptchaCbx(): Promise<void> {
+  public async ClickCaptchaCbx(): Promise<void> {
     await browserHelper.WaitElementClikable(this._captchaCbx);
     await this._captchaCbx.click();
     await browser.sleep(3000);
   };
 
-  public async checkFieldsHaveTextsFromHomePage(arrayOfElements): Promise<void> {
+  public async ClickSignUpBtnOnSignUpPage(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._signUpBtn);
+    await this._signUpBtn.click();
+  }
+
+  public async CheckFieldsHaveTextsFromHomePage(arrayOfElements): Promise<void> {
     for (var element of arrayOfElements) {
       try {
         if (element.getAttribute('value') == null) {

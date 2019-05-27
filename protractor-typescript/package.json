@@ -13,7 +13,7 @@
     "pretest": "npm run build && npm run webdriver-update",
     "test": "protractor ./dist/conf.js",
     "predebug": "npm run build",
-    "debug": "protractor ./dist/conf.js"
+    "debug": "protractor ./dist/debug.conf.js"
   },
   "dependencies": {
     "@types/jasmine": "^3.3.12",

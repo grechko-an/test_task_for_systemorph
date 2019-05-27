@@ -1,5 +1,7 @@
 export class DataHelper {
 
+   //Url
+   public _homePageUrl: string;
    //User
    public _username: string;
    public _correctPass: string;
@@ -13,8 +15,10 @@ export class DataHelper {
    public _socialNetworksPass: string;
    //For search feature
    public _searchWord: string;
+   
 
    constructor() {
+      this._homePageUrl = "https://www.goodreads.com/"
       this._username = "MrBean";
       this._correctPass = "parker";
       this._incorrectPass = "hollywood"

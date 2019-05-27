@@ -15,6 +15,7 @@ const socialNetworkPages = new SocialNetworks();
 export class HomePage {
   
   //Base
+  public _homePage: ElementFinder;
   public _siteSloganText: ElementFinder;
   public _accountImage: ElementFinder;
   public _homeBtn: ElementFinder;
@@ -95,6 +96,7 @@ export class HomePage {
 
   constructor() {
     //Base
+    this._homePage = element(by.id('signedOutHome'));
     this._siteSloganText = element(by.css('div[id="headline"] img'));
     this._accountImage = element(by.css('div[class="dropdown dropdown--profileMenu"] a span img'));
     this._homeBtn = element(by.xpath('//nav[@class="siteHeader__primaryNavInline"]//a[text()="Home"]'));
@@ -174,7 +176,7 @@ export class HomePage {
     };
   
 
-  public async signUpOnHomePage(name: string, email: string, password: string): Promise<void> {
+  public async SignUpOnHomePage(name: string, email: string, password: string): Promise<void> {
     await browserHelper.WaitElementClikable(this._signUpForm);
     await this._signUpNameFld.click();
     await this._signUpNameFld.sendKeys(name);
@@ -185,17 +187,17 @@ export class HomePage {
     await this._signUpBtn.click();
   };
 
-  public async signUpOnSignUpPage(): Promise<void> {
+  public async SignUpOnSignUpPage(): Promise<void> {
     await browserHelper.WaitElementVisible(signUpPage._pageTitle);
-    await signUpPage.checkFieldsHaveTextsFromHomePage(signUpPage._fields);
-    await signUpPage.clickCaptchaCbx();
+    await signUpPage.CheckFieldsHaveTextsFromHomePage(signUpPage._fields);
+    await signUpPage.ClickCaptchaCbx();
     await signUpPage._signUpBtn.click();
     await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
     await browserHelper.WaitElementClikable(basePage._mainLogo);
     await basePage._mainLogo.click();
   };
 
-  public async signOut() : Promise<void> {
+  public async SignOut() : Promise<void> {
     await browserHelper.WaitElementClikable(this._signOutBtn);
     await this._signOutBtn.click();
     await browserHelper.WaitElementVisible(signedOutPage._signedOutTxt);
@@ -203,7 +205,7 @@ export class HomePage {
     await signedOutPage._goodreadsHomeLnk.click();
   };
 
-  public async signInOnHomepage(email: string, password: string) : Promise<void> {
+  public async SignInOnHomepage(email: string, password: string) : Promise<void> {
     await browserHelper.WaitElementClikable(this._signInEmailFld);
     await this._signInEmailFld.click();
     await this._signInEmailFld.sendKeys(email);
@@ -213,7 +215,7 @@ export class HomePage {
     await this._signInBtn.click();
   };
 
-  public async signInWithFB(email: string, password: string) : Promise<void> {
+  public async SignInWithFB(email: string, password: string) : Promise<void> {
     await browserHelper.WaitElementClikable(this._fbSignInBtn);
     await this._fbSignInBtn.click();
     await browserHelper.WaitElementClikable(socialNetworkPages._fbEmailFld);
@@ -225,7 +227,7 @@ export class HomePage {
     await browser.sleep(3000);
   };
 
-  public async signInWithTwitter(email: string, password: string) : Promise<void> {
+  public async SignInWithTwitter(email: string, password: string) : Promise<void> {
     await browserHelper.WaitElementClikable(this._twitterSignInBtn);
     await this._twitterSignInBtn.click();
     await browserHelper.WaitElementClikable(socialNetworkPages._twEmailFld);
@@ -237,7 +239,7 @@ export class HomePage {
     await browser.sleep(3000);
   };
 
-  public async signInWithGoogle(email: string, password: string) : Promise<void> {
+  public async SignInWithGoogle(email: string, password: string) : Promise<void> {
     await browserHelper.WaitElementClikable(this._googleSignInBtn);
     await this._googleSignInBtn.click();
     await browserHelper.WaitElementClikable(socialNetworkPages._glEmailFld);
@@ -251,7 +253,7 @@ export class HomePage {
     await browser.sleep(3000);
   };
 
-  public async signInWithAmazon(email: string, password: string) : Promise<void> {
+  public async SignInWithAmazon(email: string, password: string) : Promise<void> {
     await browserHelper.WaitElementClikable(this._amazonSignInBtn);
     await this._amazonSignInBtn.click();
     await browserHelper.WaitElementClikable(socialNetworkPages._amEmailFld);
@@ -263,18 +265,18 @@ export class HomePage {
     await browser.sleep(3000);
   };
 
-  public async getAccountName() : Promise<string> {
+  public async GetAccountName() : Promise<string> {
     await this._accountImage.click();
     await this._accountName.getAttribute("innerText");
     return;
   };
 
-  public async goToPromoPage(element): Promise<void> {
+  public async GoToPromoPage(element): Promise<void> {
     await browserHelper.WaitElementClikable(element);
     await this._promoHeader.click();
   };
 
-  public async checkLinksAndButtonsAreWorkingWell(arrayOfElements): Promise<void> {
+  public async CheckLinksAndButtonsAreWorkingWell(arrayOfElements): Promise<void> {
     for (var element of arrayOfElements) {
       await browserHelper.WaitElementClikable(element);
       let url = await element.getAttribute('href');
@@ -285,7 +287,7 @@ export class HomePage {
     }
   };
 
-  public async checkImageLinksAreWorkingWell(arrayOfElements): Promise<void> {
+  public async CheckImageLinksAreWorkingWell(arrayOfElements): Promise<void> {
     for (var element of arrayOfElements) {
       await browserHelper.WaitElementClikable(element);
       await element.click();
@@ -295,11 +297,42 @@ export class HomePage {
     }
   };
 
-  public async textsArePresent(q1: ElementFinder, q2: ElementFinder, a1: ElementFinder, a2: ElementFinder): Promise<void> {
+  public async TextsArePresent(q1: ElementFinder, q2: ElementFinder, a1: ElementFinder, a2: ElementFinder): Promise<void> {
     expect(await q1.isDisplayed()).toBe(true);
     expect(await q2.isDisplayed()).toBe(true);
     expect(await a1.isDisplayed()).toBe(true);
     expect(await a2.isDisplayed()).toBe(true);
   };
 
+  public async ClickSignUpBtnOnHomePage(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._signUpBtn);
+    await this._signUpBtn.click();
+  };
+
+  public async ClickAccountImage(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._accountImage)
+    await this._accountImage.click();
+  };
+
+  public async ClickForgotLnk(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._forgotItLnk);
+    await this._forgotItLnk.click();
+  };
+
+  public async FillSearchFld(word: string): Promise<void> {
+    await browserHelper.WaitElementClikable(this._searchFld);
+    await this._searchFld.click();
+    await this._searchFld.sendKeys(word);
+    await this._searchBtn.click();
+  };
+
+  public async ClickQuotesLinkedImg(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._quotesLnkImg);
+    await this._quotesLnkImg.click();
+  };
+  
+  public async ClickBestAwardsLinkedImg(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._awardsLnkImg);
+    await this._awardsLnkImg.click();
+  };
 }

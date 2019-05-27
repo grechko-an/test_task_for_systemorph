@@ -13,7 +13,7 @@ export class ModalPopup {
         this._closeBtn = element(by.css('div[class="modal__content"] div[class="modal__close"] button'));
     }
 
-    public async closeHomeModalPopup() : Promise<void> {
+    public async CloseHomeModalPopup() : Promise<void> {
         await browserHelper.WaitElementVisible(this._popupTitle);
         await browserHelper.WaitElementClikable(this._closeBtn);
         await this._closeBtn.click();

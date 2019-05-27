@@ -4,17 +4,17 @@ import { SpecReporter } from 'jasmine-spec-reporter';
 export let config: Config = {
 
   allScriptsTimeout: 15000,
-  
+
   framework: 'jasmine',
-  
+
   capabilities: {
-    browserName: 'chrome',
-  
-   //Use headless mode 
-   /* chromeOptions: {
-       args: [ "--headless", "--disable-gpu"]
-     }*/
-  },
+  browserName: 'chrome',
+
+  //Use headless mode 
+  /*chromeOptions: {
+     args: [ "--headless", "--disable-gpu"]
+   }*/
+ },
 
   jasmineNodeOpts: {
     showColors: true,

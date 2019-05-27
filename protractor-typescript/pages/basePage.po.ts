@@ -14,7 +14,7 @@ export class BasePage {
   };
 
   
-  public async isSignedOut() : Promise<boolean> {
+  public async IsSignedOut() : Promise<boolean> {
 
     let id: string = await this._pageBody.getAttribute('id'); 
 
