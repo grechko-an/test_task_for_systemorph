@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
-const jasmine_spec_reporter_1 = require("jasmine-spec-reporter");
+var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
 exports.config = {
     allScriptsTimeout: 15000,
     framework: 'jasmine',
     capabilities: {
-        browserName: 'firefox'
+        browserName: 'chrome',
     },
     jasmineNodeOpts: {
         showColors: true,
@@ -19,7 +19,14 @@ exports.config = {
         protractor_1.browser.ignoreSynchronization = true;
         protractor_1.browser.manage().window().maximize();
         protractor_1.browser.get('');
-        jasmine.getEnv().addReporter(new jasmine_spec_reporter_1.SpecReporter({ spec: { displayStacktrace: true } }));
+        jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
+            savePath: './report/screenshots',
+            cleanDestination: true,
+            screenshotsFolder: 'images',
+            fileName: 'report',
+            takeScreenshots: true,
+            takeScreenshotsOnlyOnFailures: true
+        }));
     }
     //seleniumAddress: 'http://localhost:4444/wd/hub'
 };

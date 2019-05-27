@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
-            "args": ["${workspaceRoot}/debug.conf.js"],
+            "args": ["${workspaceRoot}/dist/debug.conf.js"],
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ],

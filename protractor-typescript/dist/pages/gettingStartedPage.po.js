@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
-class GettingStartedPage {
+class GettingStarted {
     constructor() {
         this._gettingStarted = protractor_1.element(protractor_1.by.css('div[class="headerTitle"]'));
     }
 }
-exports.GettingStartedPage = GettingStartedPage;
+exports.GettingStarted = GettingStarted;
 //# sourceMappingURL=gettingStartedPage.po.js.map

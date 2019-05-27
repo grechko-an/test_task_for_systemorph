@@ -187,16 +187,6 @@ export class HomePage {
     await this._signUpBtn.click();
   };
 
-  public async SignUpOnSignUpPage(): Promise<void> {
-    await browserHelper.WaitElementVisible(signUpPage._pageTitle);
-    await signUpPage.CheckFieldsHaveTextsFromHomePage(signUpPage._fields);
-    await signUpPage.ClickCaptchaCbx();
-    await signUpPage._signUpBtn.click();
-    await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
-    await browserHelper.WaitElementClikable(basePage._mainLogo);
-    await basePage._mainLogo.click();
-  };
-
   public async SignOut() : Promise<void> {
     await browserHelper.WaitElementClikable(this._signOutBtn);
     await this._signOutBtn.click();

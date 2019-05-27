@@ -5,9 +5,10 @@ class BasePage {
     constructor() {
         this._pageBody = protractor_1.element(protractor_1.by.css('body'));
         this._mainLogo = protractor_1.element(protractor_1.by.css('div[id="logo"] a img'));
+        this._siteHeader = protractor_1.element(protractor_1.by.css('div[class="siteHeader"]'));
     }
     ;
-    async isSignedOut() {
+    async IsSignedOut() {
         let id = await this._pageBody.getAttribute('id');
         if (id == "signedOutHome") {
             return true;
