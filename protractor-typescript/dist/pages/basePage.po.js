@@ -1,11 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
+const browserHelper_1 = require("../helpers/browserHelper");
 class BasePage {
     constructor() {
         this._pageBody = protractor_1.element(protractor_1.by.css('body'));
         this._mainLogo = protractor_1.element(protractor_1.by.css('div[id="logo"] a img'));
+        this._signPagesMainLogo = protractor_1.element(protractor_1.by.css('div[class="logo"] a img'));
+        this._pagesMainLogo = protractor_1.element(protractor_1.by.css('a[title="Goodreads home"]'));
         this._siteHeader = protractor_1.element(protractor_1.by.css('div[class="siteHeader"]'));
+    }
+    ;
+    async goToHomePageFromSignPages() {
+        await browserHelper_1.browserHelper.WaitElementClikable(this._signPagesMainLogo);
+        await this._signPagesMainLogo.click();
+    }
+    ;
+    async goToHomePageFromPages() {
+        await browserHelper_1.browserHelper.WaitElementClikable(this._pagesMainLogo);
+        await this._pagesMainLogo.click();
     }
     ;
     async IsSignedOut() {

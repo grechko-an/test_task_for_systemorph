@@ -116,22 +116,22 @@ describe('Home Page', () => {
         expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter an email address to sign up for Goodreads.");
         await browser.navigate().back();
     });
-    it('Should get consistant alert when try to Sign up without Captcha', async () => {
+    xit('Should get consistant alert when try to Sign up without Captcha', async () => {
         await browserHelper.WaitElementVisible(homePage._signUpForm);
         await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._correctEmail, dataHelper._correctPass);
         await signUpPage.ClickSignUpBtnOnSignUpPage();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._alertTxt.getAttribute('innerText')).toEqual("CAPTCHA response is incorrect. Please try again.");
-        await browser.driver.navigate().back();
-        //await signUpPage.goToHomePageFromSignPages();
+        //await browser.driver.navigate().back();
+        await basePage.goToHomePageFromSignPages();
     });
-    it('Should get consistant alert when try to Sign up with invalid Email and Password', async () => {
+    xit('Should get consistant alert when try to Sign up with invalid Email and Password', async () => {
         await browserHelper.WaitElementVisible(homePage._signUpForm);
         await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, dataHelper._invalidPass);
         expect(await homePage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
         await browser.refresh();
     });
-    it('Should get consistant alert when try to Sign up with invalid Email', async () => {
+    xit('Should get consistant alert when try to Sign up with invalid Email', async () => {
         await browserHelper.WaitElementVisible(homePage._signUpForm);
         await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, dataHelper._correctPass);
         expect(await homePage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
@@ -147,9 +147,9 @@ describe('Home Page', () => {
         expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter a password of six or more characters");
         await browser.navigate().back();
     });
-    it('Should get consistant alert when try to Sign up with invalid Email and blank Password', async () => {
+    xit('Should get consistant alert when try to Sign up with invalid Email and blank Password', async () => {
         await browserHelper.WaitElementVisible(homePage._signUpForm);
-        await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, null);
+        await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, "");
         expect(await homePage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
         await browser.refresh();
     });
@@ -182,14 +182,14 @@ describe('Home Page', () => {
     });
     it('Should get consistant alert when try to Sign in with blank Email field', async () => {
         await browserHelper.WaitElementVisible(homePage._signInForm);
-        await homePage.SignInOnHomepage(null, dataHelper._correctPassForSignIn);
+        await homePage.SignInOnHomepage("", dataHelper._correctPassForSignIn);
         await browserHelper.WaitElementVisible(signInPage._alertTxt);
         expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
         await browser.navigate().back();
     });
     it('Should get consistant alert when try to Sign in with blank Password field', async () => {
         await browserHelper.WaitElementVisible(homePage._signInForm);
-        await homePage.SignInOnHomepage(dataHelper._correctEmailForSignIn, null);
+        await homePage.SignInOnHomepage(dataHelper._correctEmailForSignIn, "");
         await browserHelper.WaitElementVisible(signInPage._alertTxt);
         expect(await signInPage._alertTxt.getText()).toEqual(' Sorry, we didn’t recognize that email/password combination. Please try again.');
         await browser.navigate().back();

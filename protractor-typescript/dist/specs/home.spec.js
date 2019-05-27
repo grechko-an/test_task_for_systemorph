@@ -110,21 +110,22 @@ describe('Home Page', () => {
             expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter an email address to sign up for Goodreads.");
             await protractor_1.browser.navigate().back();
         });
-        it('Should get consistant alert when try to Sign up without Captcha', async () => {
+        xit('Should get consistant alert when try to Sign up without Captcha', async () => {
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signUpForm);
             await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._correctEmail, dataHelper._correctPass);
             await signUpPage.ClickSignUpBtnOnSignUpPage();
             await browserHelper_1.browserHelper.WaitElementVisible(signUpPage._pageTitle);
             expect(await signUpPage._alertTxt.getAttribute('innerText')).toEqual("CAPTCHA response is incorrect. Please try again.");
-            await protractor_1.browser.driver.navigate().back();
+            //await browser.driver.navigate().back();
+            await basePage.goToHomePageFromSignPages();
         });
-        it('Should get consistant alert when try to Sign up with invalid Email and Password', async () => {
+        xit('Should get consistant alert when try to Sign up with invalid Email and Password', async () => {
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signUpForm);
             await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, dataHelper._invalidPass);
             expect(await homePage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
             await protractor_1.browser.refresh();
         });
-        it('Should get consistant alert when try to Sign up with invalid Email', async () => {
+        xit('Should get consistant alert when try to Sign up with invalid Email', async () => {
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signUpForm);
             await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, dataHelper._correctPass);
             expect(await homePage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
@@ -142,7 +143,7 @@ describe('Home Page', () => {
         });
         it('Should get consistant alert when try to Sign up with invalid Email and blank Password', async () => {
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signUpForm);
-            await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, null);
+            await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._invalidEmail, "");
             expect(await homePage._signUpEmailFld.getAttribute('validationMessage')).toEqual("Please include an '@' in the email address. 'parker1983gmail.com' is missing an '@'.");
             await protractor_1.browser.refresh();
         });
