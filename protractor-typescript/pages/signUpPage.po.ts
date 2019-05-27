@@ -42,7 +42,7 @@ export class SignUp {
 
   public async SignUpOnSignUpPage(): Promise<void> {
     await browserHelper.WaitElementVisible(this._pageTitle);
-    //await this.CheckFieldsHaveTextsFromHomePage(this._fields);
+    //await this.CheckFieldsHaveTextsFromHomePage(this._fields); it takes error I haven't fix it yet
     await this.ClickCaptchaCbx();
     await this._signUpBtn.click();
     await browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
@@ -51,7 +51,6 @@ export class SignUp {
   };
 
   public async ClickCaptchaCbx(): Promise<void> {
-    //await browserHelper.WaitElementVisible(this._captchaFrame);
     await browser.sleep(3000);
     await browser.switchTo().frame(element(by.css('iframe[role="presentation"]')).getWebElement());
     await browserHelper.WaitElementClikable(this._captchaCbx);
