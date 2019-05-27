@@ -20,12 +20,12 @@ class SignUp {
         this._captchaCbx = protractor_1.element(protractor_1.by.id('recaptcha-anchor'));
         this._fields = protractor_1.element.all(protractor_1.by.css('input[name*="user"]'));
         //Alert
-        this._alertTxt = protractor_1.element(protractor_1.by.css('p[class="flash notice"]'));
+        this._alertTxt = protractor_1.element(protractor_1.by.css('p[class="flash error"]'));
     }
     ;
     async SignUpOnSignUpPage() {
         await browserHelper_1.browserHelper.WaitElementVisible(this._pageTitle);
-        //await this.CheckFieldsHaveTextsFromHomePage(this._fields);
+        //await this.CheckFieldsHaveTextsFromHomePage(this._fields); it takes error I haven't fix it yet
         await this.ClickCaptchaCbx();
         await this._signUpBtn.click();
         await browserHelper_1.browserHelper.WaitElementVisible(gettingStartedPage._gettingStarted);
@@ -34,7 +34,6 @@ class SignUp {
     }
     ;
     async ClickCaptchaCbx() {
-        //await browserHelper.WaitElementVisible(this._captchaFrame);
         await protractor_1.browser.sleep(3000);
         await protractor_1.browser.switchTo().frame(protractor_1.element(protractor_1.by.css('iframe[role="presentation"]')).getWebElement());
         await browserHelper_1.browserHelper.WaitElementClikable(this._captchaCbx);

@@ -108,14 +108,14 @@ describe('Home Page', () => {
             await signUpPage.ClickSignUpBtnOnSignUpPage();
             await browserHelper_1.browserHelper.WaitElementVisible(signUpPage._pageTitle);
             expect(await signUpPage._alertTxt.getText()).toEqual(" Sorry, you must enter an email address to sign up for Goodreads.");
-            await protractor_1.browser.navigate().back();
         });
         it('Should get consistant alert when try to Sign up without Captcha', async () => {
+            await protractor_1.browser.navigate().back();
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signUpForm);
             await homePage.SignUpOnHomePage(dataHelper._username, dataHelper._correctEmail, dataHelper._correctPass);
             await signUpPage.ClickSignUpBtnOnSignUpPage();
             await browserHelper_1.browserHelper.WaitElementVisible(signUpPage._pageTitle);
-            expect(await signUpPage._alertTxt.getText()).toEqual(" CAPTCHA response is incorrect. Please try again.");
+            expect(await signUpPage._alertTxt.getAttribute('innerText')).toEqual("CAPTCHA response is incorrect. Please try again.");
             await protractor_1.browser.navigate().back();
         });
         it('Should get consistant alert when try to Sign up with invalid Email and Password', async () => {
