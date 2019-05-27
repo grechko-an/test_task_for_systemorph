@@ -122,7 +122,8 @@ describe('Home Page', () => {
         await signUpPage.ClickSignUpBtnOnSignUpPage();
         await browserHelper.WaitElementVisible(signUpPage._pageTitle);
         expect(await signUpPage._alertTxt.getAttribute('innerText')).toEqual("CAPTCHA response is incorrect. Please try again.");
-        await browser.navigate().back();
+        await browser.driver.navigate().back();
+        //await signUpPage.goToHomePageFromSignPages();
     });
     it('Should get consistant alert when try to Sign up with invalid Email and Password', async () => {
         await browserHelper.WaitElementVisible(homePage._signUpForm);

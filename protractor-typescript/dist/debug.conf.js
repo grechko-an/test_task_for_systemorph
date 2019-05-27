@@ -6,7 +6,7 @@ exports.config = {
     allScriptsTimeout: 15000,
     framework: 'jasmine',
     capabilities: {
-        browserName: 'firefox',
+        browserName: 'chrome',
     },
     jasmineNodeOpts: {
         showColors: true,
