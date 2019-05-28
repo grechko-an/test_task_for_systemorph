@@ -162,7 +162,7 @@ describe('Home Page', () => {
         it('Should Sign in via Home page with correct user data', async () => {
             //await basePage.GoToHomePageFromSignPages();
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signInForm);
-            await homePage.SignInOnHomepage(dataHelper._correctEmailForSignIn, dataHelper._correctPassForSignIn);
+            await homePage.SignInOnHomepage(dataHelper._correctEmail, dataHelper._correctPass);
             await modalPopup.CloseHomeModalPopup();
             expect(await homePage._accountImage.isPresent()).toBe(true);
             expect(await basePage.IsSignedOut()).toBe(false);

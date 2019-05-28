@@ -4,7 +4,7 @@ class DataHelper {
     constructor() {
         this._homePageUrl = "https://www.goodreads.com/";
         this._username = "MrBean";
-        this._correctPass = "parker";
+        this._correctPass = "pppaaarrr";
         this._incorrectPass = "hollywood";
         this._invalidPass = "a";
         this._correctEmail = "parker1983@gmail.com";

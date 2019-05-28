@@ -117,11 +117,9 @@ class HomePage {
         await browserHelper_1.browserHelper.WaitElementClikable(this._signInEmailFld);
         await this._signInEmailFld.click();
         await this._signInEmailFld.sendKeys(email);
-        await protractor_1.browser.sleep(3000);
         await browserHelper_1.browserHelper.WaitElementClikable(this._signInPasswordFld);
         await this._signInPasswordFld.click();
         await this._signInPasswordFld.sendKeys(password);
-        await protractor_1.browser.sleep(3000);
         await this.ClickSignInBtn();
     }
     ;
