@@ -176,7 +176,7 @@ export class HomePage {
     };
   
 
-  public async SignUpOnHomePage(name: string, email: string, password: string): Promise<void> {
+  public async SignUpOnHomePage(name: any, email: any, password: any): Promise<void> {
     await browserHelper.WaitElementClikable(this._signUpForm);
     await this._signUpNameFld.click();
     await this._signUpNameFld.sendKeys(name);
@@ -202,7 +202,7 @@ export class HomePage {
     await browserHelper.WaitElementClikable(this._signInPasswordFld);
     await this._signInPasswordFld.click();
     await this._signInPasswordFld.sendKeys(password);
-    await this._signInBtn.click();
+    await this.ClickSignInBtn();
   };
 
   public async SignInWithFB(email: string, password: string) : Promise<void> {
@@ -255,14 +255,19 @@ export class HomePage {
     await browser.sleep(3000);
   };
 
+  public async ClickSignInBtn(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._signInBtn);
+    await this._signInBtn.click();
+  }
+
   public async GetAccountName() : Promise<string> {
     await this._accountImage.click();
     await this._accountName.getAttribute("innerText");
     return;
   };
 
-  public async GoToPromoPage(element): Promise<void> {
-    await browserHelper.WaitElementClikable(element);
+  public async GoToPromoPage(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._promoHeader);
     await this._promoHeader.click();
   };
 
@@ -273,17 +278,7 @@ export class HomePage {
       await element.click();
       expect(await browser.getCurrentUrl()).toEqual(url);
       expect(await basePage._siteHeader.isDisplayed()).toBe(true);
-      await browser.navigate().back();
-    }
-  };
-
-  public async CheckImageLinksAreWorkingWell(arrayOfElements): Promise<void> {
-    for (var element of arrayOfElements) {
-      await browserHelper.WaitElementClikable(element);
-      await element.click();
-      expect(await browser.getCurrentUrl()).toContain("book/show/");
-      expect(await basePage._siteHeader.isDisplayed()).toBe(true);
-      await browser.navigate().back();
+      await basePage.GoToHomePageFromPages();
     }
   };
 

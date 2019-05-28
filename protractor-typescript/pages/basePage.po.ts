@@ -19,15 +19,22 @@ export class BasePage {
     this._siteHeader = element(by.css('div[class="siteHeader"]'));
   };
 
-  public async goToHomePageFromSignPages(): Promise<void> {
+  public async MainLogoClick(): Promise<void> {
     await browserHelper.WaitElementClikable(this._signPagesMainLogo);
     await this._signPagesMainLogo.click();
   };
 
-  public async goToHomePageFromPages(): Promise<void> {
+  public async GoToHomePageFromSignPages(): Promise<void> {
+    await browserHelper.WaitElementClikable(this._signPagesMainLogo);
+    await this._signPagesMainLogo.click();
+  };
+
+  public async GoToHomePageFromPages(): Promise<void> {
     await browserHelper.WaitElementClikable(this._pagesMainLogo);
     await this._pagesMainLogo.click();
   };
+
+
   
   public async IsSignedOut() : Promise<boolean> {
     let id: string = await this._pageBody.getAttribute('id'); 

@@ -117,10 +117,12 @@ class HomePage {
         await browserHelper_1.browserHelper.WaitElementClikable(this._signInEmailFld);
         await this._signInEmailFld.click();
         await this._signInEmailFld.sendKeys(email);
+        await protractor_1.browser.sleep(3000);
         await browserHelper_1.browserHelper.WaitElementClikable(this._signInPasswordFld);
         await this._signInPasswordFld.click();
         await this._signInPasswordFld.sendKeys(password);
-        await this._signInBtn.click();
+        await protractor_1.browser.sleep(3000);
+        await this.ClickSignInBtn();
     }
     ;
     async SignInWithFB(email, password) {
@@ -173,14 +175,18 @@ class HomePage {
         await protractor_1.browser.sleep(3000);
     }
     ;
+    async ClickSignInBtn() {
+        await browserHelper_1.browserHelper.WaitElementClikable(this._signInBtn);
+        await this._signInBtn.click();
+    }
     async GetAccountName() {
         await this._accountImage.click();
         await this._accountName.getAttribute("innerText");
         return;
     }
     ;
-    async GoToPromoPage(element) {
-        await browserHelper_1.browserHelper.WaitElementClikable(element);
+    async GoToPromoPage() {
+        await browserHelper_1.browserHelper.WaitElementClikable(this._promoHeader);
         await this._promoHeader.click();
     }
     ;
@@ -191,17 +197,7 @@ class HomePage {
             await element.click();
             expect(await protractor_1.browser.getCurrentUrl()).toEqual(url);
             expect(await basePage._siteHeader.isDisplayed()).toBe(true);
-            await protractor_1.browser.navigate().back();
-        }
-    }
-    ;
-    async CheckImageLinksAreWorkingWell(arrayOfElements) {
-        for (var element of arrayOfElements) {
-            await browserHelper_1.browserHelper.WaitElementClikable(element);
-            await element.click();
-            expect(await protractor_1.browser.getCurrentUrl()).toContain("book/show/");
-            expect(await basePage._siteHeader.isDisplayed()).toBe(true);
-            await protractor_1.browser.navigate().back();
+            await basePage.GoToHomePageFromPages();
         }
     }
     ;

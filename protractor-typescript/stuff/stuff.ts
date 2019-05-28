@@ -1,3 +1,5 @@
+import { HomePage } from "../pages/homePage.po";
+
 /*
     describe('Sign up and Sign out features', () => {
 
@@ -35,5 +37,18 @@
     from signOut() 
     await browserHelper.WaitElementClikable(this._accountImage);
     await this._accountImage.click();
-}
-    */
+    }
+    
+    from HomePage
+
+    public async CheckImagedLinksAreWorkingWell(arrayOfElements): Promise<void> {
+        for (var element of arrayOfElements) {
+          await browserHelper.WaitElementClikable(element);
+          await element.click();
+          expect(await browser.getCurrentUrl()).toContain("book/show/");
+          expect(await basePage._siteHeader.isDisplayed()).toBe(true);
+          await basePage.GoToHomePageFromPages();
+        }
+      };
+       
+*/

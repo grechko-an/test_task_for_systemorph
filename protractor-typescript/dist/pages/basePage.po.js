@@ -11,12 +11,17 @@ class BasePage {
         this._siteHeader = protractor_1.element(protractor_1.by.css('div[class="siteHeader"]'));
     }
     ;
-    async goToHomePageFromSignPages() {
+    async MainLogoClick() {
         await browserHelper_1.browserHelper.WaitElementClikable(this._signPagesMainLogo);
         await this._signPagesMainLogo.click();
     }
     ;
-    async goToHomePageFromPages() {
+    async GoToHomePageFromSignPages() {
+        await browserHelper_1.browserHelper.WaitElementClikable(this._signPagesMainLogo);
+        await this._signPagesMainLogo.click();
+    }
+    ;
+    async GoToHomePageFromPages() {
         await browserHelper_1.browserHelper.WaitElementClikable(this._pagesMainLogo);
         await this._pagesMainLogo.click();
     }
