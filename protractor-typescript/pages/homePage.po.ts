@@ -262,8 +262,9 @@ export class HomePage {
 
   public async GetAccountName() : Promise<string> {
     await this._accountImage.click();
-    await this._accountName.getAttribute("innerText");
-    return;
+    await browserHelper.WaitElementVisible(this._accountName);
+    let accname = await this._accountName.getAttribute("innerText");
+    return accname;
   };
 
   public async GoToPromoPage(): Promise<void> {

@@ -179,8 +179,9 @@ class HomePage {
     }
     async GetAccountName() {
         await this._accountImage.click();
-        await this._accountName.getAttribute("innerText");
-        return;
+        await browserHelper_1.browserHelper.WaitElementVisible(this._accountName);
+        let accname = await this._accountName.getAttribute("innerText");
+        return accname;
     }
     ;
     async GoToPromoPage() {

@@ -10,6 +10,7 @@ export class DataHelper {
    public _correctEmail: string;
    public _incorrectEmail: string;
    public _invalidEmail: string;
+   public _signedInUsername: string;
    public _correctEmailForSignIn: string;
    public _correctPassForSignIn: string;
    //Social networks
@@ -30,6 +31,7 @@ export class DataHelper {
       this._socialNetworksLogin = "someEmailForSN@gmail.com";
       this._socialNetworksPass = "global13";
       this._searchWord = "Mexico";
+      this._signedInUsername = "MrBean";
       this._correctEmailForSignIn = "mrbean1983@gmail.com";
       this._correctPassForSignIn = "mmmrrrbbb";
    }

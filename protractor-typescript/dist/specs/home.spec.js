@@ -162,11 +162,11 @@ describe('Home Page', () => {
         it('Should Sign in via Home page with correct user data', async () => {
             //await basePage.GoToHomePageFromSignPages();
             await browserHelper_1.browserHelper.WaitElementVisible(homePage._signInForm);
-            await homePage.SignInOnHomepage(dataHelper._correctEmail, dataHelper._correctPass);
+            await homePage.SignInOnHomepage(dataHelper._correctEmailForSignIn, dataHelper._correctPassForSignIn);
             await modalPopup.CloseHomeModalPopup();
             expect(await homePage._accountImage.isPresent()).toBe(true);
             expect(await basePage.IsSignedOut()).toBe(false);
-            expect(await homePage.GetAccountName()).toEqual(dataHelper._username);
+            expect(await homePage.GetAccountName()).toEqual(dataHelper._signedInUsername);
         });
         it('Should get consistant alert when try to Sign in with all blank fields', async () => {
             await homePage.ClickAccountImage();
