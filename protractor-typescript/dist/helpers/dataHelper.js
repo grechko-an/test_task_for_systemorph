@@ -13,7 +13,7 @@ class DataHelper {
         this._socialNetworksLogin = "someEmailForSN@gmail.com";
         this._socialNetworksPass = "global13";
         this._searchWord = "Mexico";
-        this._signedInUsername = "MrBean";
+        this._signedInUsername = "MRBEAN";
         this._correctEmailForSignIn = "mrbean1983@gmail.com";
         this._correctPassForSignIn = "mmmrrrbbb";
     }

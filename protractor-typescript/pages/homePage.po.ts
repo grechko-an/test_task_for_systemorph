@@ -273,7 +273,7 @@ export class HomePage {
   };
 
   public async CheckLinksAndButtonsAreWorkingWell(arrayOfElements): Promise<void> {
-    for (var element of arrayOfElements) {
+    for (var element of arrayOfElements.keys()) {
       await browserHelper.WaitElementClikable(element);
       let url = await element.getAttribute('href');
       await element.click();

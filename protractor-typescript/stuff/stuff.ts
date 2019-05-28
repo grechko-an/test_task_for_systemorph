@@ -3,6 +3,16 @@ import { HomePage } from "../pages/homePage.po";
 /*
     describe('Sign up and Sign out features', () => {
 
+    code snippet for "for of" cycle
+    import { forOf } from 'dojo-shim/iterator';
+
+        let map = new Map<string, string>();
+        map.set('hello', 'world');
+
+        forOf(map.keys(), (key) => {
+        console.log(key);
+    }); 
+
     it('Should Sign out well', async () => {
         if (basePage.isSignedOut()) {
             await basePage._mainLogo.click();

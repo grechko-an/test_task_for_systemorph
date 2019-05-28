@@ -171,6 +171,8 @@ describe('Home Page', () => {
         expect(await homePage._accountImage.isPresent()).toBe(true);
         expect(await basePage.IsSignedOut()).toBe(false);
         expect(await homePage.GetAccountName()).toEqual(dataHelper._signedInUsername);
+        await browser.refresh();
+        await modalPopup.CloseHomeModalPopup();
     });
     it('Should get consistant alert when try to Sign in with all blank fields', async () => {
         await homePage.ClickAccountImage();
